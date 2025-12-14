@@ -1,3 +1,5 @@
+"""Test response example fixtures for unit tests."""
+
 from pyteslamate.models import (
     CarBatteryHealth,
     CarCharge,

@@ -1,5 +1,9 @@
 """Pydantic models for API request and response validation."""
 
+# Disable class-docstring checks for this large models file
+# (If you prefer, add docstrings to each class instead)
+# pylint: disable=missing-class-docstring
+
 from __future__ import annotations
 
 from datetime import datetime
@@ -431,10 +435,12 @@ class ChargingDetails(BaseModel):
         if isinstance(v, str) and v.startswith("0000-"):
             return None
         # Try parse to datetime, fallback to None on failure
-        try:
-            return datetime.fromisoformat(v) if isinstance(v, str) else v
-        except Exception:
-            return None
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v)
+            except (ValueError, TypeError):
+                return None
+        return v if isinstance(v, datetime) else None
 
 
 class TPMSDetails(BaseModel):

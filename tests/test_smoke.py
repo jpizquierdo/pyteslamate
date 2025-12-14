@@ -1,4 +1,5 @@
 """Smoke test for package distribution."""
+# pylint: disable=import-outside-toplevel
 
 
 def test_import() -> None:

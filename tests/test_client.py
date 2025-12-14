@@ -1,3 +1,6 @@
+"""Unit tests for the Teslamate client using mocked responses."""
+
+# pylint: disable=missing-function-docstring
 from datetime import datetime
 from urllib.parse import urlencode
 
