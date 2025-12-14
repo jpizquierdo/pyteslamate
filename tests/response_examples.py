@@ -8,6 +8,8 @@ from pyteslamate.models import (
     CarDrives,
     Cars,
     CarStatus,
+    CarUpdates,
+    GlobalSettings,
 )
 
 CARS_PAYLOAD = Cars.model_validate(
@@ -493,6 +495,49 @@ CAR_STATUS_PAYLOAD = CarStatus.model_validate(
                 "unit_of_temperature": "C",
                 "unit_of_pressure": "bar",
             },
+        }
+    }
+)
+
+CAR_UPDATES_PAYLOAD = CarUpdates.model_validate(
+    {
+        "data": {
+            "car": {"car_id": 1, "car_name": "Tesli"},
+            "updates": [
+                {
+                    "update_id": 2,
+                    "start_date": "2024-04-19T18:51:14+02:00",
+                    "end_date": "2024-04-19T19:07:45+02:00",
+                    "version": "2024.8.9 0cac3042b6cd",
+                },
+                {
+                    "update_id": 1,
+                    "start_date": "2024-04-19T16:25:07+02:00",
+                    "end_date": "2024-04-19T16:25:07+02:00",
+                    "version": "2023.44.200 2fa4e3cb0681",
+                },
+            ],
+        }
+    }
+)
+
+
+GLOBAL_SETTINGS_PAYLOAD = GlobalSettings.model_validate(
+    {
+        "data": {
+            "settings": {
+                "setting_id": 1,
+                "account_info": {
+                    "inserted_at": "2024-04-13T11:51:28+02:00",
+                    "updated_at": "2024-10-25T14:12:58+02:00",
+                },
+                "teslamate_units": {"unit_of_length": "km", "unit_of_temperature": "C"},
+                "teslamate_webgui": {"preferred_range": "rated", "language": "es"},
+                "teslamate_urls": {
+                    "base_url": "https://teslamate.domain.com",
+                    "grafana_url": "https://teslamate-grafana.domain.com",
+                },
+            }
         }
     }
 )
