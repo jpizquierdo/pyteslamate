@@ -1,7 +1,11 @@
+"""Unit tests for the Teslamate client using mocked responses."""
+
+# pylint: disable=missing-function-docstring
 from datetime import datetime
+from urllib.parse import urlencode
+
 import pytest
 from aioresponses import aioresponses
-from urllib.parse import urlencode
 
 from pyteslamate.models import (
     CarBatteryHealth,
@@ -11,17 +15,16 @@ from pyteslamate.models import (
     CarDrives,
     Cars,
     CarStatus,
-    CarUpdates,
-    GlobalSettings,
 )
 from pyteslamate.pyteslamate import Teslamate
 from tests.response_examples import (
-    CARS_PAYLOAD,
     CAR_BATTERY_HEALTH_PAYLOAD,
-    CAR_CHARGES_PAYLOAD,
     CAR_CHARGE_PAYLOAD,
+    CAR_CHARGES_PAYLOAD,
+    CAR_DRIVE_PAYLOAD,
     CAR_DRIVES_PAYLOAD,
-    CAR_DRIVE_PAYLOAD,CAR_STATUS_PAYLOAD
+    CAR_STATUS_PAYLOAD,
+    CARS_PAYLOAD,
 )
 
 
@@ -108,14 +111,14 @@ async def test_get_car_charge_by_id_success(teslamate_client: Teslamate, base_ur
 async def test_get_car_drives_success(teslamate_client: Teslamate, base_url: str) -> None:
     start = datetime(2025, 5, 1)
     end = datetime(2025, 12, 15)
-    minDistance = "1"
-    maxDistance = "200"
+    min_distance = "1"
+    max_distance = "200"
     query = urlencode(
         {
             "startDate": start.isoformat(),
             "endDate": end.isoformat(),
-            "minDistance": minDistance,
-            "maxDistance": maxDistance,
+            "minDistance": min_distance,
+            "maxDistance": max_distance,
         }
     )
     url = f"{base_url}/cars/1/drives?{query}"
@@ -123,7 +126,7 @@ async def test_get_car_drives_success(teslamate_client: Teslamate, base_url: str
     with aioresponses() as mocked:
         mocked.get(url, status=200, body=CAR_DRIVES_PAYLOAD.model_dump_json())
         car_drives = await teslamate_client.get_car_drives(
-            1, start_date=start, end_date=end, min_distance=minDistance, max_distance=maxDistance
+            1, start_date=start, end_date=end, min_distance=min_distance, max_distance=max_distance
         )
     assert isinstance(car_drives, CarDrives)
     assert car_drives.model_dump() == CAR_DRIVES_PAYLOAD.model_dump()
@@ -138,6 +141,7 @@ async def test_get_car_drive_by_id_success(teslamate_client: Teslamate, base_url
         car_drive = await teslamate_client.get_car_drive(1, drive_id=1441)
     assert isinstance(car_drive, CarDrive)
     assert car_drive.model_dump() == CAR_DRIVE_PAYLOAD.model_dump()
+
 
 @pytest.mark.asyncio
 async def test_get_car_status_success(teslamate_client: Teslamate, base_url: str) -> None:

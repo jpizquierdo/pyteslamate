@@ -1,3 +1,5 @@
+"""Test response example fixtures for unit tests."""
+
 from pyteslamate.models import (
     CarBatteryHealth,
     CarCharge,
@@ -6,12 +8,10 @@ from pyteslamate.models import (
     CarDrives,
     Cars,
     CarStatus,
-    CarUpdates,
-    GlobalSettings,
 )
 
-CARS_PAYLOAD = Cars(
-    **{
+CARS_PAYLOAD = Cars.model_validate(
+    {
         "data": {
             "cars": [
                 {
@@ -51,8 +51,8 @@ CARS_PAYLOAD = Cars(
         }
     }
 )
-CAR_BATTERY_HEALTH_PAYLOAD = CarBatteryHealth(
-    **{
+CAR_BATTERY_HEALTH_PAYLOAD = CarBatteryHealth.model_validate(
+    {
         "data": {
             "car": {"car_id": 1, "car_name": "Tesli"},
             "battery_health": {
@@ -68,8 +68,8 @@ CAR_BATTERY_HEALTH_PAYLOAD = CarBatteryHealth(
     }
 )
 
-CAR_CHARGES_PAYLOAD = CarCharges(
-    **{
+CAR_CHARGES_PAYLOAD = CarCharges.model_validate(
+    {
         "data": {
             "car": {"car_id": 1, "car_name": "Tesli"},
             "charges": [
@@ -115,8 +115,8 @@ CAR_CHARGES_PAYLOAD = CarCharges(
     }
 )
 
-CAR_CHARGE_PAYLOAD = CarCharge(
-    **{
+CAR_CHARGE_PAYLOAD = CarCharge.model_validate(
+    {
         "data": {
             "car": {"car_id": 1, "car_name": "Tesli"},
             "charge": {
@@ -203,8 +203,8 @@ CAR_CHARGE_PAYLOAD = CarCharge(
 )
 
 
-CAR_DRIVES_PAYLOAD = CarDrives(
-    **{
+CAR_DRIVES_PAYLOAD = CarDrives.model_validate(
+    {
         "data": {
             "car": {"car_id": 1, "car_name": "Tesli"},
             "drives": [
@@ -212,7 +212,7 @@ CAR_DRIVES_PAYLOAD = CarDrives(
                     "drive_id": 1555,
                     "start_date": "2025-12-11T19:57:31+01:00",
                     "end_date": "2025-12-11T20:18:46+01:00",
-                    "start_address": "Calle Velazquez, Madrid",
+                    "start_address": "Street Velazquez, Madrid",
                     "end_address": "Casa",
                     "odometer_details": {
                         "odometer_start": 31286.291098,
@@ -253,7 +253,7 @@ CAR_DRIVES_PAYLOAD = CarDrives(
                     "start_date": "2025-12-11T17:58:30+01:00",
                     "end_date": "2025-12-11T18:22:09+01:00",
                     "start_address": "Casa",
-                    "end_address": "Calle Velazquez, Madrid",
+                    "end_address": "Street Velazquez, Madrid",
                     "odometer_details": {
                         "odometer_start": 31278.566246,
                         "odometer_end": 31286.258486,
@@ -286,8 +286,8 @@ CAR_DRIVES_PAYLOAD = CarDrives(
     }
 )
 
-CAR_DRIVE_PAYLOAD = CarDrive(
-    **{
+CAR_DRIVE_PAYLOAD = CarDrive.model_validate(
+    {
         "data": {
             "car": {"car_id": 1, "car_name": "Tesli"},
             "drive": {
@@ -389,8 +389,8 @@ CAR_DRIVE_PAYLOAD = CarDrive(
     }
 )
 
-CAR_STATUS_PAYLOAD = CarStatus(
-    **{
+CAR_STATUS_PAYLOAD = CarStatus.model_validate(
+    {
         "data": {
             "car": {"car_id": 1, "car_name": "Tesli"},
             "status": {

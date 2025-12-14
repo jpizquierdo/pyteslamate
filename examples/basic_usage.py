@@ -65,7 +65,7 @@ async def main() -> None:
             logger.info(global_settings)
 
         except TeslamateError as e:
-            logger.error(f"API error occurred: {e.message}")
+            logger.error("API error occurred: %s", e.message)
 
 
 if __name__ == "__main__":
