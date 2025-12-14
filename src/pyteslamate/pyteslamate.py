@@ -13,7 +13,6 @@ from aiohttp import (
     ClientSession,
     ClientTimeout,
 )
-from pydantic import ValidationError
 
 from pyteslamate.exceptions import (
     TeslamateAuthenticationError,
@@ -22,7 +21,6 @@ from pyteslamate.exceptions import (
     TeslamateRateLimitError,
     TeslamateServerError,
     TeslamateTimeoutError,
-    TeslamateValidationError,
 )
 from pyteslamate.models import (
     CarBatteryHealth,
@@ -187,12 +185,8 @@ class Teslamate:
 
     async def get_car_status(self, car_id: int) -> CarStatus:
         """Retrieve current status for a car and validate the response."""
-        try:
-            data = await self._request("GET", f"cars/{car_id}/status")
-            return CarStatus.model_validate(data)
-        except ValidationError as e:
-            # preserve original exception context
-            raise TeslamateValidationError(f"Received invalid data for car status: {e}") from e
+        data = await self._request("GET", f"cars/{car_id}/status")
+        return CarStatus.model_validate(data)
 
     async def get_car_updates(self, car_id: int) -> CarUpdates:
         """Retrieve updates for a car."""

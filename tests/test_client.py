@@ -15,6 +15,8 @@ from pyteslamate.models import (
     CarDrives,
     Cars,
     CarStatus,
+    CarUpdates,
+    GlobalSettings,
 )
 from pyteslamate.pyteslamate import Teslamate
 from tests.response_examples import (
@@ -24,7 +26,9 @@ from tests.response_examples import (
     CAR_DRIVE_PAYLOAD,
     CAR_DRIVES_PAYLOAD,
     CAR_STATUS_PAYLOAD,
+    CAR_UPDATES_PAYLOAD,
     CARS_PAYLOAD,
+    GLOBAL_SETTINGS_PAYLOAD,
 )
 
 
@@ -152,3 +156,25 @@ async def test_get_car_status_success(teslamate_client: Teslamate, base_url: str
         car_status = await teslamate_client.get_car_status(1)
     assert isinstance(car_status, CarStatus)
     assert car_status.model_dump() == CAR_STATUS_PAYLOAD.model_dump()
+
+
+@pytest.mark.asyncio
+async def test_get_car_updates_success(teslamate_client: Teslamate, base_url: str) -> None:
+    url = f"{base_url}/cars/1/updates"
+
+    with aioresponses() as mocked:
+        mocked.get(url, status=200, body=CAR_UPDATES_PAYLOAD.model_dump_json())
+        car_updates = await teslamate_client.get_car_updates(1)
+    assert isinstance(car_updates, CarUpdates)
+    assert car_updates.model_dump() == CAR_UPDATES_PAYLOAD.model_dump()
+
+
+@pytest.mark.asyncio
+async def test_get_global_settings_success(teslamate_client: Teslamate, base_url: str) -> None:
+    url = f"{base_url}/globalsettings"
+
+    with aioresponses() as mocked:
+        mocked.get(url, status=200, body=GLOBAL_SETTINGS_PAYLOAD.model_dump_json())
+        global_settings = await teslamate_client.get_global_settings()
+    assert isinstance(global_settings, GlobalSettings)
+    assert global_settings.model_dump() == GLOBAL_SETTINGS_PAYLOAD.model_dump()
