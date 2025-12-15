@@ -1,3 +1,8 @@
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jpizquierdo/pyteslamate/tests.yaml?label=Test)
+![PyPI - Version](https://img.shields.io/pypi/v/pyteslamate)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyteslamate)
+![PyPI - License](https://img.shields.io/pypi/l/pyteslamate)
+
 # pyTeslaMate
 
 pyTeslaMate is an asynchronous Python client for the [TeslaMateApi](https://github.com/tobiasehlert/teslamateapi).
