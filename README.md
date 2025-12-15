@@ -57,6 +57,14 @@ All response payloads are validated into Pydantic v2 models under `pyteslamate.m
 - `.model_validate(data)` to validate a dict
 - `.model_dump()` / `.model_dump_json()` to serialize
 
+## Current Limitations & Future Work
+
+### Command Operations
+Currently, only read operations are implemented. Write operations for sending commands to vehicles (e.g., wake up, climate control, charging control) are planned for future releases.
+
+### API Key Authentication
+API key authentication is not yet tested or fully supported. Implementation is pending the merge of a [PR in TeslaMateApi](https://github.com/tobiasehlert/teslamateapi/pull/352) that will enable API key functionality. Once merged, authentication support will be added with comprehensive test coverage.
+
 
 ## Testing & Coverage
 
