@@ -1,3 +1,10 @@
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jpizquierdo/pyteslamate/tests.yaml?label=tests&logo=github)](https://github.com/jpizquierdo/pyteslamate/actions/workflows/tests.yaml)
+[![PyPI - Version](https://img.shields.io/pypi/v/pyteslamate)](https://pypi.org/project/pyteslamate/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyteslamate)]((https://pypi.org/project/pyteslamate/))
+[![TeslaMateApi Compatibility](https://img.shields.io/badge/compatible%20with-TeslaMateApi%20v1.23.0-blue)](https://github.com/tobiasehlert/teslamateapi/releases/tag/v1.23.0)
+[![PyPI - License](https://img.shields.io/pypi/l/pyteslamate)](https://github.com/jpizquierdo/pyteslamate/blob/main/LICENSE)
+
+
 # pyTeslaMate
 
 pyTeslaMate is an asynchronous Python client for the [TeslaMateApi](https://github.com/tobiasehlert/teslamateapi).
@@ -92,4 +99,4 @@ Key checks included: ruff, mypy, pylint, pytest, yamllint, codespell.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](https://github.com/jpizquierdo/pyteslamate/blob/main/LICENSE).
