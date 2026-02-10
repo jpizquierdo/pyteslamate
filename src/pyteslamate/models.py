@@ -534,7 +534,8 @@ class BatteryDetailsCurrent(BaseModel):
 
 class RangeModelCurrentCharge(BaseModel):
     start_range: float
-    end_range: float
+    current_range: float
+    added_range: float
 
 
 class ChargesCurrentError(StrEnum):
