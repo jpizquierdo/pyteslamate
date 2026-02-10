@@ -25,10 +25,12 @@ from pyteslamate.exceptions import (
 from pyteslamate.models import (
     CarBatteryHealth,
     CarCharge,
+    CarChargeCurrent,
     CarCharges,
     CarDrive,
     CarDrives,
     Cars,
+    CarsChargesCurrentError,
     CarStatus,
     CarUpdates,
     GlobalSettings,
@@ -156,6 +158,17 @@ class Teslamate:
         """Retrieve a single charge by id for a car."""
         data = await self._request("GET", f"cars/{car_id}/charges/{charge_id}")
         return CarCharge.model_validate(data)
+
+    async def get_current_car_charge(
+        self, car_id: int
+    ) -> CarChargeCurrent | CarsChargesCurrentError:
+        """Retrieve the current charge status for a car."""
+        data = await self._request("GET", f"cars/{car_id}/charges/current")
+        return (
+            CarChargeCurrent.model_validate(data)
+            if "data" in data
+            else CarsChargesCurrentError.model_validate(data)
+        )
 
     async def get_car_drives(
         self,

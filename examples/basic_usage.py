@@ -63,6 +63,8 @@ async def main() -> None:
             logger.info("Fetching global settings")
             global_settings = await client.get_global_settings()
             logger.info(global_settings)
+            car_current_charge = await client.get_current_car_charge(car_id=1)
+            logger.info(car_current_charge)
 
         except TeslamateError as e:
             logger.error("API error occurred: %s", e.message)
