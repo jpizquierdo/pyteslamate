@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from enum import StrEnum
 from typing import Any, Literal
 
 from pydantic import BaseModel, field_validator
@@ -27,6 +28,14 @@ class CarCharges(BaseModel):
 
 class CarCharge(BaseModel):
     data: CarChargeModel
+
+
+class CarChargeCurrent(BaseModel):
+    data: CarChargeCurrentModel
+
+
+class CarsChargesCurrentError(BaseModel):
+    error: ChargesCurrentError
 
 
 class CarDrives(BaseModel):
@@ -52,7 +61,7 @@ class GlobalSettings(BaseModel):
 # Common Models
 class CarDetailsReduced(BaseModel):
     car_id: int
-    car_name: str
+    car_name: str | None
 
 
 class Units(BaseModel):
@@ -186,7 +195,7 @@ class ChargeDetail(BaseModel):
     not_enough_power_to_heat: bool | None
     charger_details: ChargerDetails
     battery_info: BatteryInfo
-    conn_charge_cable: str
+    conn_charge_cable: str | None
     fast_charger_info: FastChargerInfo
     outside_temp: float
 
@@ -200,7 +209,7 @@ class ChargerDetails(BaseModel):
 
 
 class BatteryInfo(BaseModel):
-    ideal_battery_range: float
+    ideal_battery_range: float | None = None
     rated_battery_range: float
     battery_heater: bool
     battery_heater_on: bool
@@ -209,8 +218,8 @@ class BatteryInfo(BaseModel):
 
 class FastChargerInfo(BaseModel):
     fast_charger_present: bool
-    fast_charger_brand: str
-    fast_charger_type: str
+    fast_charger_brand: str | None
+    fast_charger_type: str | None
 
 
 # Car Drives Models
@@ -493,3 +502,43 @@ class TeslamateWebgui(BaseModel):
 class TeslamateUrls(BaseModel):
     base_url: str
     grafana_url: str
+
+
+# Current Charge Models
+class CarChargeCurrentModel(BaseModel):
+    car: CarDetailsReduced
+    charge: ChargeCurrent
+    units: Units
+
+
+class ChargeCurrent(BaseModel):
+    charge_id: int
+    start_date: datetime
+    is_charging: bool
+    address: str
+    charge_energy_added: float
+    cost: float
+    duration_min: int
+    duration_str: str
+    battery_details: BatteryDetailsCurrent
+    rated_range: RangeModelCurrentCharge
+    outside_temp_avg: float
+    odometer: float
+    charge_details: ChargeDetail
+
+
+class BatteryDetailsCurrent(BaseModel):
+    start_battery_level: int
+    current_battery_level: int
+
+
+class RangeModelCurrentCharge(BaseModel):
+    start_range: float
+    current_range: float
+    added_range: float
+
+
+class ChargesCurrentError(StrEnum):
+    CARS_CHARGES_CURRENT_ERROR_1 = "Unable to load current charge."
+    CARS_CHARGES_CURRENT_ERROR_2 = "Unable to load current charge details."
+    CARS_CHARGES_CURRENT_ERROR_3 = "No active charging in progress."

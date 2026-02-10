@@ -3,10 +3,12 @@
 from pyteslamate.models import (
     CarBatteryHealth,
     CarCharge,
+    CarChargeCurrent,
     CarCharges,
     CarDrive,
     CarDrives,
     Cars,
+    CarsChargesCurrentError,
     CarStatus,
     CarUpdates,
     GlobalSettings,
@@ -540,4 +542,67 @@ GLOBAL_SETTINGS_PAYLOAD = GlobalSettings.model_validate(
             }
         }
     }
+)
+
+CAR_CHARGE_CURRENT_PAYLOAD = CarChargeCurrent.model_validate(
+    {
+        "data": {
+            "car": {"car_id": 1, "car_name": "Tesli"},
+            "charge": {
+                "charge_id": 111,
+                "start_date": "2024-04-19T18:51:14+02:00",
+                "is_charging": True,
+                "address": "Lidl",
+                "charge_energy_added": 52.16,
+                "cost": 0.0,
+                "duration_min": 15,
+                "duration_str": "00:15",
+                "battery_details": {"start_battery_level": 29, "current_battery_level": 35},
+                "rated_range": {
+                    "start_range": 123.65,
+                    "current_range": 151.33,
+                    "added_range": 27.68,
+                },
+                "outside_temp_avg": 26.5,
+                "odometer": 12317.597585,
+                "charge_details": {
+                    "detail_id": 61772,
+                    "date": "2024-04-19T18:51:14+02:00",
+                    "battery_level": 29,
+                    "usable_battery_level": 29,
+                    "charge_energy_added": 0.0,
+                    "not_enough_power_to_heat": None,
+                    "charger_details": {
+                        "charger_actual_current": 3,
+                        "charger_phases": 2,
+                        "charger_pilot_current": 16,
+                        "charger_power": 1,
+                        "charger_voltage": 231,
+                    },
+                    "battery_info": {
+                        "ideal_battery_range": 123.65,
+                        "rated_battery_range": 123.65,
+                        "battery_heater": False,
+                        "battery_heater_on": False,
+                        "battery_heater_no_power": None,
+                    },
+                    "conn_charge_cable": "IEC",
+                    "fast_charger_info": {
+                        "fast_charger_present": False,
+                        "fast_charger_brand": "<invalid>",
+                        "fast_charger_type": "<invalid>",
+                    },
+                    "outside_temp": 26.5,
+                },
+            },
+            "units": {
+                "unit_of_length": "km",
+                "unit_of_temperature": "C",
+            },
+        }
+    }
+)
+
+CAR_CHARGE_CURRENT_ERROR_PAYLOAD = CarsChargesCurrentError.model_validate(
+    {"error": "No active charging in progress."}
 )

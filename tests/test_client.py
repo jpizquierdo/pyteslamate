@@ -10,17 +10,22 @@ from aioresponses import aioresponses
 from pyteslamate.models import (
     CarBatteryHealth,
     CarCharge,
+    CarChargeCurrent,
     CarCharges,
     CarDrive,
     CarDrives,
     Cars,
+    CarsChargesCurrentError,
     CarStatus,
     CarUpdates,
+    ChargesCurrentError,
     GlobalSettings,
 )
 from pyteslamate.pyteslamate import Teslamate
 from tests.response_examples import (
     CAR_BATTERY_HEALTH_PAYLOAD,
+    CAR_CHARGE_CURRENT_ERROR_PAYLOAD,
+    CAR_CHARGE_CURRENT_PAYLOAD,
     CAR_CHARGE_PAYLOAD,
     CAR_CHARGES_PAYLOAD,
     CAR_DRIVE_PAYLOAD,
@@ -178,3 +183,25 @@ async def test_get_global_settings_success(teslamate_client: Teslamate, base_url
         global_settings = await teslamate_client.get_global_settings()
     assert isinstance(global_settings, GlobalSettings)
     assert global_settings.model_dump() == GLOBAL_SETTINGS_PAYLOAD.model_dump()
+
+
+@pytest.mark.asyncio
+async def test_get_current_car_charge_success(teslamate_client: Teslamate, base_url: str) -> None:
+    url = f"{base_url}/cars/1/charges/current"
+
+    with aioresponses() as mocked:
+        mocked.get(url, status=200, body=CAR_CHARGE_CURRENT_PAYLOAD.model_dump_json())
+        current_charge = await teslamate_client.get_current_car_charge(1)
+    assert isinstance(current_charge, CarChargeCurrent)
+    assert current_charge.model_dump() == CAR_CHARGE_CURRENT_PAYLOAD.model_dump()
+
+
+@pytest.mark.asyncio
+async def test_get_current_car_charge_error(teslamate_client: Teslamate, base_url: str) -> None:
+    url = f"{base_url}/cars/1/charges/current"
+
+    with aioresponses() as mocked:
+        mocked.get(url, status=200, body=CAR_CHARGE_CURRENT_ERROR_PAYLOAD.model_dump_json())
+        current_charge = await teslamate_client.get_current_car_charge(1)
+    assert isinstance(current_charge, CarsChargesCurrentError)
+    assert current_charge.error == ChargesCurrentError.CARS_CHARGES_CURRENT_ERROR_3
