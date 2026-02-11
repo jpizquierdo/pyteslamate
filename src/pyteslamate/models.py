@@ -80,7 +80,7 @@ class CarsModel(BaseModel):
 
 class Car(BaseModel):
     car_id: int
-    name: str
+    name: str | None
     car_details: CarDetails
     car_exterior: CarExterior
     car_settings: CarSettings
