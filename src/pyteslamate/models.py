@@ -218,8 +218,8 @@ class BatteryInfo(BaseModel):
 
 class FastChargerInfo(BaseModel):
     fast_charger_present: bool
-    fast_charger_brand: str | None
-    fast_charger_type: str | None
+    fast_charger_brand: str | None = None
+    fast_charger_type: str | None = None
 
 
 # Car Drives Models
@@ -432,7 +432,7 @@ class ChargingDetails(BaseModel):
     charge_current_request: int
     charge_current_request_max: int
     scheduled_charging_start_time: datetime | None
-    time_to_full_charge: int
+    time_to_full_charge: float
 
     @field_validator("scheduled_charging_start_time", mode="before")
     @classmethod
@@ -524,7 +524,7 @@ class ChargeCurrent(BaseModel):
     rated_range: RangeModelCurrentCharge
     outside_temp_avg: float
     odometer: float
-    charge_details: ChargeDetail
+    charge_details: list[ChargeDetail]
 
 
 class BatteryDetailsCurrent(BaseModel):
