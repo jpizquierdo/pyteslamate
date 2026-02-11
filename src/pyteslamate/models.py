@@ -218,8 +218,8 @@ class BatteryInfo(BaseModel):
 
 class FastChargerInfo(BaseModel):
     fast_charger_present: bool
-    fast_charger_brand: str | None=None
-    fast_charger_type: str | None=None
+    fast_charger_brand: str | None = None
+    fast_charger_type: str | None = None
 
 
 # Car Drives Models
