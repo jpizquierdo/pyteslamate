@@ -1,6 +1,6 @@
 [project]
 name = "pyteslamate"
-version = "0.1.1"
+version = "0.1.2"
 description = "Asynchronous Python client for the Teslamate API"
 readme = "README.md"
 authors = [
