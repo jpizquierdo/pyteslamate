@@ -151,7 +151,6 @@ class Teslamate:
         if end_date:
             params["endDate"] = end_date.isoformat()
         data = await self._request("GET", f"cars/{car_id}/charges", params=params or None)
-        print(data)
         return CarCharges.model_validate(data)
 
     async def get_car_charge(self, car_id: int, charge_id: int) -> CarCharge:
