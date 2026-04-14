@@ -52,7 +52,6 @@ class Teslamate:
         base_url: str,
         api_key: str | None = None,
         timeout: float = 30.0,
-        max_retries: int = 3,
         session: ClientSession | None = None,
     ) -> None:
         """Create a Teslamate client wrapper.
@@ -63,7 +62,6 @@ class Teslamate:
         self.base_url = base_url
         self.api_key = api_key
         self.timeout = timeout
-        self.max_retries = max_retries
         self._session = session
 
     async def __aenter__(self) -> "Teslamate":
