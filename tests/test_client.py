@@ -1,7 +1,7 @@
 """Unit tests for the Teslamate client using mocked responses."""
 
 # pylint: disable=missing-function-docstring
-from datetime import datetime
+from datetime import UTC, datetime
 from urllib.parse import urlencode
 
 import pytest
@@ -14,6 +14,7 @@ from pyteslamate.models import (
     CarCharges,
     CarDrive,
     CarDrives,
+    CarExterior,
     Cars,
     CarsChargesCurrentError,
     CarStatus,
@@ -88,19 +89,22 @@ async def test_get_car_charges_all_success(teslamate_client: Teslamate, base_url
 async def test_get_car_charges_range_date_success(
     teslamate_client: Teslamate, base_url: str
 ) -> None:
-    start = datetime(2025, 5, 1)
-    end = datetime(2025, 5, 15)
+    start = datetime(2025, 5, 1, tzinfo=UTC)
+    end = datetime(2025, 5, 15, tzinfo=UTC)
     query = urlencode(
         {
-            "startDate": start.isoformat(),
-            "endDate": end.isoformat(),
+            "startDate": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "endDate": end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "location": "home",
         }
     )
     url = f"{base_url}/cars/1/charges?{query}"
 
     with aioresponses() as mocked:
         mocked.get(url, status=200, body=CAR_CHARGES_PAYLOAD.model_dump_json())
-        car_charges = await teslamate_client.get_car_charges(1, start_date=start, end_date=end)
+        car_charges = await teslamate_client.get_car_charges(
+            1, start_date=start, end_date=end, location="home"
+        )
     assert isinstance(car_charges, CarCharges)
     assert car_charges.model_dump() == CAR_CHARGES_PAYLOAD.model_dump()
 
@@ -118,16 +122,17 @@ async def test_get_car_charge_by_id_success(teslamate_client: Teslamate, base_ur
 
 @pytest.mark.asyncio
 async def test_get_car_drives_success(teslamate_client: Teslamate, base_url: str) -> None:
-    start = datetime(2025, 5, 1)
-    end = datetime(2025, 12, 15)
+    start = datetime(2025, 5, 1, tzinfo=UTC)
+    end = datetime(2025, 12, 15, tzinfo=UTC)
     min_distance = "1"
     max_distance = "200"
     query = urlencode(
         {
-            "startDate": start.isoformat(),
-            "endDate": end.isoformat(),
+            "startDate": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "endDate": end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "minDistance": min_distance,
             "maxDistance": max_distance,
+            "location": "home",
         }
     )
     url = f"{base_url}/cars/1/drives?{query}"
@@ -135,7 +140,12 @@ async def test_get_car_drives_success(teslamate_client: Teslamate, base_url: str
     with aioresponses() as mocked:
         mocked.get(url, status=200, body=CAR_DRIVES_PAYLOAD.model_dump_json())
         car_drives = await teslamate_client.get_car_drives(
-            1, start_date=start, end_date=end, min_distance=min_distance, max_distance=max_distance
+            1,
+            start_date=start,
+            end_date=end,
+            min_distance=min_distance,
+            max_distance=max_distance,
+            location="home",
         )
     assert isinstance(car_drives, CarDrives)
     assert car_drives.model_dump() == CAR_DRIVES_PAYLOAD.model_dump()
@@ -205,3 +215,13 @@ async def test_get_current_car_charge_error(teslamate_client: Teslamate, base_ur
         current_charge = await teslamate_client.get_current_car_charge(1)
     assert isinstance(current_charge, CarsChargesCurrentError)
     assert current_charge.error == ChargesCurrentError.CARS_CHARGES_CURRENT_ERROR_3
+
+
+def test_nullable_fields_v1_25() -> None:
+    ext = CarExterior(exterior_color=None, spoiler_type=None, wheel_type=None)
+    assert ext.exterior_color is None
+    data = CAR_DRIVES_PAYLOAD.model_dump()
+    data["data"]["drives"][0].update(outside_temp_avg=None, inside_temp_avg=None)
+    drive = CarDrives.model_validate(data).data.drives[0]
+    assert drive.outside_temp_avg is None
+    assert drive.inside_temp_avg is None

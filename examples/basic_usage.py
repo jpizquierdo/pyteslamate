@@ -44,6 +44,10 @@ async def main() -> None:
             car_charge = await client.get_car_charge(car_id=1, charge_id=111)
             logger.info(car_charge)
 
+            logger.info("Fetching car 1 drives at location 'home'")
+            car_drives = await client.get_car_drives(car_id=1, location="home")
+            logger.info(car_drives)
+
             logger.info("Fetching car 1 drives")
             car_drives = await client.get_car_drives(car_id=1)
             logger.info(car_drives)

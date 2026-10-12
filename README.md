@@ -1,7 +1,7 @@
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/jpizquierdo/pyteslamate/tests.yaml?label=tests&logo=github)](https://github.com/jpizquierdo/pyteslamate/actions/workflows/tests.yaml)
 [![PyPI - Version](https://img.shields.io/pypi/v/pyteslamate)](https://pypi.org/project/pyteslamate/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyteslamate)](https://pypi.org/project/pyteslamate/)
-[![TeslaMateApi Compatibility](https://img.shields.io/badge/compatible%20with-TeslaMateApi%20v1.24.1-blue)](https://github.com/tobiasehlert/teslamateapi/releases/tag/v1.24.1)
+[![TeslaMateApi Compatibility](https://img.shields.io/badge/compatible%20with-TeslaMateApi%20v1.25.0-blue)](https://github.com/tobiasehlert/teslamateapi/releases/tag/v1.25.0)
 [![PyPI - License](https://img.shields.io/pypi/l/pyteslamate)](https://github.com/jpizquierdo/pyteslamate/blob/main/LICENSE)
 
 
@@ -52,6 +52,10 @@ async def main():
         end_date=datetime(2025, 12, 8),
     )
     print(charges.model_dump())
+    # drives starting or ending at a location (teslamateapi >= 1.25.0);
+    # get_car_charges accepts location too
+    drives = await client.get_car_drives(1, location="home")
+    print(drives.model_dump())
 
 if __name__ == "__main__":
     asyncio.run(main())

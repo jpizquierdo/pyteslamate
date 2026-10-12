@@ -1,5 +1,7 @@
 """Teslamate API Client - A modern async REST API client library."""
 
+from importlib.metadata import version
+
 from pyteslamate.exceptions import (
     TeslamateAuthenticationError,
     TeslamateError,
@@ -20,7 +22,7 @@ from pyteslamate.models import (
 )
 from pyteslamate.pyteslamate import Teslamate
 
-__version__ = "0.1.0"
+__version__ = version("pyteslamate")
 
 __all__ = [
     "Teslamate",
