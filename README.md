@@ -52,6 +52,10 @@ async def main():
         end_date=datetime(2025, 12, 8),
     )
     print(charges.model_dump())
+    # drives starting or ending at a location (teslamateapi >= 1.25.0);
+    # get_car_charges accepts location too
+    drives = await client.get_car_drives(1, location="home")
+    print(drives.model_dump())
 
 if __name__ == "__main__":
     asyncio.run(main())

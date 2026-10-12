@@ -140,14 +140,20 @@ class Teslamate:
         return CarBatteryHealth.model_validate(data)
 
     async def get_car_charges(
-        self, car_id: int, start_date: datetime | None = None, end_date: datetime | None = None
+        self,
+        car_id: int,
+        start_date: datetime | None = None,
+        end_date: datetime | None = None,
+        location: str | None = None,
     ) -> CarCharges:
-        """Retrieve charges for a car. Optional start_date/end_date are ISO-encoded."""
+        """Retrieve charges for a car. Optional date and location filters supported."""
         params: dict[str, str] = {}
         if start_date:
             params["startDate"] = start_date.isoformat()
         if end_date:
             params["endDate"] = end_date.isoformat()
+        if location:
+            params["location"] = location
         data = await self._request("GET", f"cars/{car_id}/charges", params=params or None)
         return CarCharges.model_validate(data)
 
@@ -174,8 +180,9 @@ class Teslamate:
         end_date: datetime | None = None,
         min_distance: str | None = None,
         max_distance: str | None = None,
+        location: str | None = None,
     ) -> CarDrives:
-        """Retrieve drives for a car. Optional date and distance filters supported."""
+        """Retrieve drives for a car. Optional date, distance and location filters supported."""
         params: dict[str, str] = {}
         if start_date:
             params["startDate"] = start_date.isoformat()
@@ -185,6 +192,8 @@ class Teslamate:
             params["minDistance"] = min_distance
         if max_distance:
             params["maxDistance"] = max_distance
+        if location:
+            params["location"] = location
         data = await self._request("GET", f"cars/{car_id}/drives", params=params or None)
         return CarDrives.model_validate(data)
 

@@ -98,9 +98,9 @@ class CarDetails(BaseModel):
 
 
 class CarExterior(BaseModel):
-    exterior_color: str
-    spoiler_type: str
-    wheel_type: str
+    exterior_color: str | None
+    spoiler_type: str | None
+    wheel_type: str | None
 
 
 class CarSettings(BaseModel):
@@ -245,8 +245,8 @@ class Drive(BaseModel):
     battery_details: DriveBatteryDetails
     range_ideal: RangeWithDiff
     range_rated: RangeWithDiff
-    outside_temp_avg: float
-    inside_temp_avg: float
+    outside_temp_avg: float | None
+    inside_temp_avg: float | None
     energy_consumed_net: float | None
     consumption_net: float | None
 
