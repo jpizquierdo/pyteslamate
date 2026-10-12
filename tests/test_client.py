@@ -1,7 +1,7 @@
 """Unit tests for the Teslamate client using mocked responses."""
 
 # pylint: disable=missing-function-docstring
-from datetime import datetime
+from datetime import UTC, datetime
 from urllib.parse import urlencode
 
 import pytest
@@ -89,12 +89,12 @@ async def test_get_car_charges_all_success(teslamate_client: Teslamate, base_url
 async def test_get_car_charges_range_date_success(
     teslamate_client: Teslamate, base_url: str
 ) -> None:
-    start = datetime(2025, 5, 1)
-    end = datetime(2025, 5, 15)
+    start = datetime(2025, 5, 1, tzinfo=UTC)
+    end = datetime(2025, 5, 15, tzinfo=UTC)
     query = urlencode(
         {
-            "startDate": start.isoformat(),
-            "endDate": end.isoformat(),
+            "startDate": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "endDate": end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "location": "home",
         }
     )
@@ -122,14 +122,14 @@ async def test_get_car_charge_by_id_success(teslamate_client: Teslamate, base_ur
 
 @pytest.mark.asyncio
 async def test_get_car_drives_success(teslamate_client: Teslamate, base_url: str) -> None:
-    start = datetime(2025, 5, 1)
-    end = datetime(2025, 12, 15)
+    start = datetime(2025, 5, 1, tzinfo=UTC)
+    end = datetime(2025, 12, 15, tzinfo=UTC)
     min_distance = "1"
     max_distance = "200"
     query = urlencode(
         {
-            "startDate": start.isoformat(),
-            "endDate": end.isoformat(),
+            "startDate": start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "endDate": end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             "minDistance": min_distance,
             "maxDistance": max_distance,
             "location": "home",

@@ -2,7 +2,7 @@
 # pylint: disable=too-many-arguments,too-many-positional-arguments
 
 import logging
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import urljoin
 
@@ -37,6 +37,11 @@ from pyteslamate.models import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _utc(dt: datetime) -> str:
+    """Format as canonical UTC RFC3339 (naive datetimes are taken as local time)."""
+    return dt.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 class Teslamate:
@@ -149,9 +154,9 @@ class Teslamate:
         """Retrieve charges for a car. Optional date and location filters supported."""
         params: dict[str, str] = {}
         if start_date:
-            params["startDate"] = start_date.isoformat()
+            params["startDate"] = _utc(start_date)
         if end_date:
-            params["endDate"] = end_date.isoformat()
+            params["endDate"] = _utc(end_date)
         if location:
             params["location"] = location
         data = await self._request("GET", f"cars/{car_id}/charges", params=params or None)
@@ -185,9 +190,9 @@ class Teslamate:
         """Retrieve drives for a car. Optional date, distance and location filters supported."""
         params: dict[str, str] = {}
         if start_date:
-            params["startDate"] = start_date.isoformat()
+            params["startDate"] = _utc(start_date)
         if end_date:
-            params["endDate"] = end_date.isoformat()
+            params["endDate"] = _utc(end_date)
         if min_distance:
             params["minDistance"] = min_distance
         if max_distance:
